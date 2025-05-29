@@ -28,100 +28,93 @@
 //   }
 // }
 
+
+
 // Driver Code
+// let arr = [4, 1, 3, 9, 7];
+// mergeSort(arr);
+// console.log(arr);
+
 let arr = [4, 1, 3, 9, 7];
 mergeSort(arr);
 console.log(arr);
 
-// let arr = [4, 1, 3, 9, 7];
-// arr = mergeSort(arr);
-// console.log(arr);
 
-// Merge Recursive Way
-function mergeSort(array) {
-  if (array.length <= 1) return array;
 
-  const middle = array.length / 2;
-  let left = array.slice(0, middle);
-  let right = array.slice(middle);
+// // Merge Recursive Way (New array)
+// function mergeSort(array) {
+//   if (array.length <= 1) return array;
 
-  return merge(mergeSort(left), mergeSort(right));
+//   const middle = array.length / 2;
+//   let left = array.slice(0, middle);
+//   let right = array.slice(middle);
+
+//   return merge(mergeSort(left), mergeSort(right));
+// }
+
+// function merge(left, right) {
+//   let newArray = [];
+//   let i = 0,
+//     j = 0;
+
+//   while (i < left.length && j < right.length) {
+//     left[i] < right[j] ? newArray.push(left[i++]) : newArray.push(right[j++]);
+//   }
+
+//   while (i < left.length) newArray.push(left[i++]);
+//   while (j < right.length) newArray.push(right[j++]);
+
+//   return newArray;
+// }
+
+
+
+// // Merge Recursive Way (sort in place)
+// function mergeSort(arr, left = 0, right = arr.length - 1) {
+//   if (left >= right) return;
+//   const mid = Math.floor((left + right) / 2);
+
+//   mergeSort(arr, left, mid);
+//   mergeSort(arr, mid + 1, right);
+
+//   merge(arr, left, mid, right);
+// }
+
+// function merge(arr, left, mid, right) {
+//   const leftPart = arr.slice(left, mid + 1);
+//   let i = 0,
+//     j = mid + 1,
+//     k = left;
+
+//   while (i < leftPart.length && j <= right) {
+//     arr[k++] = leftPart[i] <= arr[j] ? leftPart[i++] : arr[j++];
+//   }
+//   while (i < leftPart.length) arr[k++] = leftPart[i++];
+// }
+
+
+
+// Merge recoursive way - iterative-like
+function mergeSort(arr, low = 0, high = arr.length - 1) {
+    if(arr.length === 0) return [];
+    if(low === high) return [arr[low]];
+    if(low < high) {
+        const mid = Math.floor((low + high) / 2);
+        const left = mergeSort(arr, low, mid);
+        const right = mergeSort(arr, mid + 1, high);
+        return merge(left, right)
+    }
+    return;
 }
 
 function merge(left, right) {
-  let newArray = [];
-  let i = 0,
-    j = 0;
+    let array = [], i = 0, j = 0, k = 0;
 
-  while (i < left.length && j < right.length) {
-    left[i] < right[j] ? newArray.push(left[i++]) : newArray.push(right[j++]);
-  }
-
-  while (i < left.length) newArray.push(left[i++]);
-  while (j < right.length) newArray.push(right[j++]);
-
-  return newArray;
-}
-
-// sort in place
-function mergeSort(arr, left = 0, right = arr.length - 1) {
-  if (left >= right) return;
-  const mid = Math.floor((left + right) / 2);
-
-  mergeSort(arr, left, mid);
-  mergeSort(arr, mid + 1, right);
-
-  merge(arr, left, mid, right);
-}
-
-function merge(arr, left, mid, right) {
-  // Копируем левую половину во временный массив
-  const leftPart = arr.slice(left, mid + 1);
-  let i = 0,
-    j = mid + 1,
-    k = left;
-
-  while (i < leftPart.length && j <= right) {
-    arr[k++] = leftPart[i] <= arr[j] ? leftPart[i++] : arr[j++];
-  }
-  // Если что-то осталось в leftPart
-  while (i < leftPart.length) arr[k++] = leftPart[i++];
-  // Правая половина уже на нужном месте
-}
-
-function merge(arrayL, arrayR) {
-  const lengthL = arrayL.length;
-  const lengthR = arrayR.length;
-  let arrayHolder = [];
-  let i = 0;
-  let j = 0;
-  let k = 0;
-  while (i < lengthL && j < lengthR) {
-    if (arrayL[i] < arrayR[j]) {
-      arrayHolder[k++] = arrayL[i++];
-    } else {
-      arrayHolder[k++] = arrayR[j++];
+    while(i < left.length && j < right.length) {
+        array[k++] = left[i] < right[j] ? left[i++] : right[j++];
     }
-  }
-  for (; i < lengthL; ) {
-    arrayHolder[k++] = arrayL[i++];
-  }
-  for (; j < lengthR; ) {
-    arrayHolder[k++] = arrayR[j++];
-  }
-  return arrayHolder;
-}
+    while(i < left.length) array[k++] = left[i++];
+    while(j < right.length) array[k++] = right[j++];
 
-function mergeSort(arr, l = 0, h = arr.length - 1) {
-  if (arr.length === 0) return [];
-  if (l === h) {
-    return [arr[l]];
-  }
-  if (l < h) {
-    const mid = Math.floor((l + h) / 2);
-    const left = mergeSort(arr, l, mid);
-    const right = mergeSort(arr, mid + 1, h);
-    return merge(left, right);
-  }
-  return;
+    return array;
 }
