@@ -1,6 +1,6 @@
 "use strict";
 
-const { LinkedList } = require("./script");
+const { LinkedList } = require("./linked-lists");
 const list = new LinkedList();
 
 list.append("dog");
