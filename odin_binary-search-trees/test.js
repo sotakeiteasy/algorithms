@@ -10,7 +10,7 @@ function createArray(length) {
   return array;
 }
 
-const tree = new Tree(createArray(8));
+const tree = new Tree(createArray(15));
 
 console.log("\n --- Tree ---------- \n");
 tree.prettyPrint();
@@ -28,7 +28,7 @@ tree.insert(6);
 
 tree.prettyPrint();
 
-console.log("\ntry to find '6' -", tree.find(15));
+console.log("\ntry to find '6' -", tree.find(6));
 
 function orderPrint() {
   let array = [];
