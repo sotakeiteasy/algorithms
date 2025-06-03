@@ -1,27 +1,23 @@
-"use strict";
-let vertexes = {};
+// ATTENTION: script just finds the path, not the optimal one, for optimal see knights-travails-BFS ;
 
+let vertexes = {};
 let start = [7, 1];
 let end = [1, 1];
 
-function knightMoves(start, end, count = 2) {
+function knightMovesDFC(start, end, count = 2) {
   if (String(start) === String(end)) {
     endMessage();
     return true;
   }
 
-  if (count > 64) return false;
-
   const possibleMoves = findNextMove(start);
-
-  // console.log("here", possibleMoves);
 
   if (possibleMoves.length === 0) {
     let keys = Object.keys(vertexes);
     let stepBackKey = keys[keys.length - count];
     let stepBackCoords = stepBackKey.split(",").map(Number);
-    // console.log({ vertexes, start, stepBackCoords });
-    return knightMoves(stepBackCoords, end, count + 1);
+
+    return knightMovesDFC(stepBackCoords, end, count + 1);
   }
 
   if (possibleMoves.length > 0) {
@@ -29,7 +25,7 @@ function knightMoves(start, end, count = 2) {
     vertexes[start] = [...(vertexes[start] || []), nextStart];
     vertexes[nextStart] = [];
 
-    return knightMoves(nextStart, end);
+    return knightMovesDFC(nextStart, end);
   }
 
   return false;
@@ -50,8 +46,7 @@ function isPlaceVisited(place) {
 }
 
 function findNextMove(lastPlace) {
-  let first = lastPlace[0];
-  let second = lastPlace[1];
+  let [first, second] = lastPlace;
 
   return [
     [first + 1, second + 2],
@@ -65,10 +60,10 @@ function findNextMove(lastPlace) {
   ].filter((place) => isPlaceInDesc(place) && !isPlaceVisited(place));
 }
 
-function endMessage() {
+function endMessage(start, end, vertexes) {
   console.log(`\n We made it in ${Object.keys(vertexes).length} moves.`);
   console.log(`Here is our way from [${start}] to [${end}]`);
   console.log(vertexes);
 }
 
-knightMoves(start, end);
+knightMovesDFC(start, end);
